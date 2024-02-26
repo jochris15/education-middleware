@@ -33,5 +33,5 @@
     - global error (500)
 
 ## DOTENV
-membantu kita untuk simpen informasi2 penting secara aman dan juga memudahkan kita untuk memanage dan menggunakan variabelnya secara konsisten dan terorganisir
+membantu kita untuk simpen informasi2 penting secara aman dan juga memudahkan kita untuk memanage dan menggunakan variabelnya secara konsisten dan terorganisir.
 
