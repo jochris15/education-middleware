@@ -2,32 +2,49 @@ const errorHandler = (err, req, res, next) => {
     let status = 500
     let message = 'Internal Server Error'
 
-    if (err.name === 'LoginError') {
-        status = 401
-        message = 'Username/Password salah'
+    if (err.name == 'SequelizeValidationError') {
+        status = 400
+        message = err.errors[0].message
     }
 
-    if (err.name == 'Unauthorized') {
-        status = 401
-        message = "Unauthorized"
+    if (err.name == 'SequelizeUniqueConstraintError') {
+        status = 400
+        message = err.errors[0].message
     }
 
-    if (err.name == 'JsonWebTokenError') {
+    if (err.name == 'SequelizeDatabaseError' || err.name == 'SequelizeForeignKeyConstraintError') {
+        status = 400
+        message = 'Invalid input'
+    }
+
+    if (err.name == 'InvalidLogin') {
+        message = 'Please input email or password'
         status = 401
-        message = 'Unauthorized'
+    }
+
+    if (err.name == 'LoginError') {
+        message = 'Invalid email or password'
+        status = 401
+    }
+
+    if (err.name == 'Unauthorized' || err.name == 'JsonWebTokenError') {
+        message = 'Please login first'
+        status = 401
     }
 
     if (err.name == 'Forbidden') {
+        message = 'You dont have any access'
         status = 403
-        message = 'You have no access'
     }
 
-    if (err.message === 'NotFound') {
-        status = 404;
-        message = `Data not found`;
+    if (err.name == 'NotFound') {
+        status = 404
+        message = `Data not found`
     }
 
-    res.status(status).json({ message })
+    res.status(status).json({
+        message
+    })
 }
 
 module.exports = errorHandler

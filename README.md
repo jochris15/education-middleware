@@ -1,14 +1,3 @@
-## Proses Login
-- Saat login, harus menyimpan hal-hal yang penting agar nanti bisa di identifikasi siapa user yang sedang login 
-- JWT disini tugasnya untuk menggantikan session (soalnya session dianggap kurang aman, dan di refresh jg langsung hilang)
-- jadi pada saat login , sekarang kita bisa membuat payload (data-data yang akan disimpan) yang berisi contohnya id yang lagi login, rolenya, dan usernamenya 
-- Tidak seperti session , data2 yang akan disimpen itu ibaratnya di encrypt dulu (supaya lebih aman) dan dijadikan acesss token
-- Karena kita sekarang udah gak server side rendering, udah jadi REST API, kita kirim access tokennya di res.statusnya
-
-## Proses Apps
-- Mencari Data Medical Record beserta dokternya milik patient yang sedang login
-- Mencari Medical Record secara detail
-
 ## Authentication (Bearer Token)
 - ini adalah proses pengecheckan, udah login apa belom (pemberian akses)
 - tidak seperti session yang sesimpel ngecheck id nya tersimpan di object session apa enggak, kita harus medecode access tokenya terlebih dahulu
@@ -17,9 +6,10 @@
 
 ## Authorization
 - ini adalah proses pengecheckan, siapa yang lagi login (pemberian kekuasaan)
-- disini, cmn bisa liat medical record punya sendiri, jadi harus cari pasiennya dulu bedasarkan yang lagi login
-- kalo ketemu pasiennya, baru cari medical record bedasarkan paramnya
-- setelah ketemu medical recordnya, agar lebih secure, harus dicheck, apakah PK patient dan FK sama
+- disini, admin itu bisa delete/update/read detail semua event, sedangkan staff cmn bisa mengupdate / mendelete / read detail data event yang dibuat sendiri
+- kita perlu check rolenya admin / staff, kalau admin bisa langsung next
+- jadi kita perlu mencari data event yang ingin diupdate/didelete lalu mencari user yang sedang login
+- lalu dicocokan antara FK userId di event dan PK di user, apakah sama atau tidak
 
 ## Error Handler
 - hanya sebuah pemisahan error menjadi suatu komponen agar code kalian tidak redundant, karena banyak error yang sama 
@@ -31,7 +21,3 @@
     - error pada saat otorisasi (403)
     - error kalo pada saat data gak ketemu (404)
     - global error (500)
-
-## DOTENV
-membantu kita untuk simpen informasi2 penting secara aman dan juga memudahkan kita untuk memanage dan menggunakan variabelnya secara konsisten dan terorganisir
-

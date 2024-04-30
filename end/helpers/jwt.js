@@ -1,12 +1,14 @@
-const jwt = require('jsonwebtoken')
-const secretKey = 'test'
+const jwt = require('jsonwebtoken');
+const secretKey = process.env.SECRET_KEY
 
-const createToken = (payload) => { // buat nge encode payload yang mau kita simpan pas login jd access token (kayak ngecompress)
+// encode / encrypt
+const signToken = (payload) => {
     return jwt.sign(payload, secretKey)
 }
 
+// decode / decrypt
 const verifyToken = (token) => {
     return jwt.verify(token, secretKey)
-} // kayak nge decode token yang udah di buat (kayak unzip)
+}
 
-module.exports = { createToken, verifyToken }
+module.exports = { signToken, verifyToken }

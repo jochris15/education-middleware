@@ -3,33 +3,32 @@ const { User } = require('../models')
 
 const authentication = async (req, res, next) => {
     try {
-        const { authorization } = req.headers // ambil token dari header
+        const { authorization } = req.headers
 
-        if (!authorization) {
-            throw { name: "Unauthorized" }
-        }
+        if (!authorization) throw { name: "Unauthorized" }
 
-        const access_token = authorization.split(" ")[1] // di split soalnya ada kata2 "Bearer"
+        const access_token = authorization.split(' ')[1]
 
+        // pada saat proses verify, bisa terjadi error dari jwt kalo tokennya tidak sesuai
         const payload = verifyToken(access_token)
 
+        // supaya lebih secure kita cari user bedasarkan access token yang udh didecode (payload)
         const user = await User.findOne({
             where: {
-                username: payload.username
+                email: payload.email
             }
-        }) // cari user sesuai hasil decode biar makin secure
+        })
 
-        if (!user) {
-            throw { name: "Unauthorized" }
-        }
+        if (!user) throw { name: "Unauthorized" }
 
+        // info2 yang dibutuhkan supaya controller bisa tau siapa yg lagi login
         req.loginInfo = {
             userId: user.id,
-            username: user.username,
+            email: user.email,
             role: user.role
-        } // kita bikin object baru di dalam request
+        }
 
-        next() // lanjutin ke function berikutnya
+        next()
     } catch (err) {
         next(err)
     }

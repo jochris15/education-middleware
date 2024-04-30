@@ -1,31 +1,25 @@
-const { Patient, MedicalRecord } = require('../models')
+const { User, Event } = require('../models')
 const authorization = async (req, res, next) => {
     try {
         const { userId, role } = req.loginInfo
-        const { id } = req.params
 
-        if (role == "Patient") {
-            const patient = await Patient.findOne({
-                where: {
-                    userId
-                }
-            })
+        if (role == 'staff') {
+            // role yg lagi login berarti staff
+            // melakukan pengecekan eventnya punya user yang lagi login apa bukan
+            // cari dulu user di database bedasarkan login info
 
-            if (!patient) {
-                throw { name: "Forbidden" }
-            }
+            const user = await User.findByPk(userId)
 
-            const medicalRecord = await MedicalRecord.findByPk(id)
+            if (!user) throw { name: "Forbidden" }
 
-            if (!medicalRecord) {
-                throw { name: "Forbidden" }
-            }
+            // cari eventnya, check userId nya sama ga sama user yg kita cari tadi
+            const { id } = req.params
+            const event = await Event.findByPk(id)
 
-            if (patient.id !== medicalRecord.patientId) {
-                throw { name: "Forbidden" }
-            }
+            if (!event) throw { name: "NotFound" }
+
+            if (event.userId !== user.id) throw { name: "Forbidden" }
         }
-
         next()
     } catch (err) {
         next(err)

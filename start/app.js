@@ -1,12 +1,25 @@
+require('dotenv').config()
+
 const express = require('express')
-const router = require('./routes')
 const app = express()
-const PORT = 3000
+const port = 3000
+const AuthController = require('./controllers/AuthController')
+const EventController = require('./controllers/EventController')
+const GameController = require('./controllers/GameController')
 
-app.use(express.urlencoded({ extended: false }))
-app.use(express.json()); // body parser untuk ngeparse request json)
-app.use(router)
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
-app.listen(PORT, () => {
-    console.log(`http://localhost:${PORT}`)
-})  
+app.post('/register', AuthController.register)
+app.post('/login', AuthController.login)
+
+app.get('/games', GameController.read)
+app.get('/events', EventController.read)
+app.post('/events', EventController.add)
+app.get('/events/:id', EventController.readDetail)
+app.delete('/events/:id', EventController.delete)
+app.put('/events/:id', EventController.edit)
+
+app.listen(port, () => {
+    console.log(`http://localhost:${port}`)
+})
