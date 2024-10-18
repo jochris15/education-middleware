@@ -22,7 +22,7 @@ class AuthController {
         try {
             const { email, password } = req.body
 
-            if (!email || !password) throw { name: "InvalidLogin" }
+            if (!email || !password) throw { name: "BadRequest" }
 
             // proses nyari user bedasarkan email
             const user = await User.findOne({
