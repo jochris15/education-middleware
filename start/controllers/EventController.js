@@ -10,8 +10,7 @@ class Controller {
                 message: 'Success read events',
                 events
             })
-        } catch (error) {
-            console.log(error);
+        } catch (err) {
             res.status(500).json({
                 message: 'Internal Server Error'
             })
@@ -29,7 +28,6 @@ class Controller {
                 event
             })
         } catch (error) {
-            console.log(error);
             let status = 500
             let message = 'Internal Server Error'
 

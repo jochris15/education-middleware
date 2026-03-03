@@ -11,24 +11,27 @@ class AuthController {
 
             res.status(201).json({
                 message: "Success create new user",
-                user
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                }
             })
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
             let status = 500
             let message = 'Internal Server Error'
 
-            if (err.name == 'SequelizeValidationError') {
+            if (error.name == 'SequelizeValidationError') {
                 status = 400
-                message = err.errors[0].message
+                message = error.errors[0].message
             }
 
-            if (err.name == 'SequelizeUniqueConstraintError') {
+            if (error.name == 'SequelizeUniqueConstraintError') {
                 status = 400
-                message = err.errors[0].message
+                message = error.errors[0].message
             }
 
-            if (err.name == 'SequelizeDatabaseError' || err.name == 'SequelizeForeignKeyConstraintError') {
+            if (error.name == 'SequelizeDatabaseError' || error.name == 'SequelizeForeignKeyConstraintError') {
                 status = 400
                 message = 'Invalid input'
             }
@@ -67,16 +70,16 @@ class AuthController {
             res.status(200).json({
                 access_token
             })
-        } catch (err) {
+        } catch (error) {
             let message = 'Internal server error'
             let status = 500
 
-            if (err.name == 'InvalidLogin') {
+            if (error.name == 'InvalidLogin') {
                 message = 'Please input email or password'
                 status = 401
             }
 
-            if (err.name == 'LoginError') {
+            if (error.name == 'LoginError') {
                 message = 'Invalid email or password'
                 status = 401
             }

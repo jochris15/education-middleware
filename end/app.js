@@ -1,10 +1,8 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-}
+require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 3000
+const port = 3000
 const AuthController = require('./controllers/AuthController')
 const EventController = require('./controllers/EventController')
 const GameController = require('./controllers/GameController')

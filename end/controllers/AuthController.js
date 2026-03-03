@@ -11,7 +11,11 @@ class AuthController {
 
             res.status(201).json({
                 message: "Success create new user",
-                user
+                user: {
+                    id: user.id,
+                    email: user.email,
+                    role: user.role
+                }
             })
         } catch (err) {
             next(err)
