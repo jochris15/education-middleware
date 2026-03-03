@@ -9,17 +9,18 @@ Middleware adalah sebuah fungsi yang memiliki akses kepada request dan response 
 
 ## Middleware implementation
 ### Authentication (Bearer Token)
-- ini adalah proses pengecheckan, udah login apa belom (pemberian akses)
+- ini adalah proses pengecheckan, udah login apa belum, siapa yang ingin akses aplikasi kita
 - tidak seperti session yang sesimpel ngecheck id nya tersimpan di object session apa enggak, kita harus medecode access tokenya terlebih dahulu
 - sesudah di decode , kita bisa mendapatkan data-data yang kita simpan pada saat login dan bisa mencari user, ada gak usernya 
 - simpan juga data-data yang tadi sudah kita decode dalam request
 
 ### Authorization
-- ini adalah proses pengecheckan, siapa yang lagi login (pemberian kekuasaan)
+- ini adalah proses pengecheckan, siapa yang lagi login di aplikasi kita (ngecheck role & pemberian kekuasaan)
 - disini, admin itu bisa delete/update detail semua event, sedangkan staff cmn bisa mengupdate/mendelete  detail data event yang dibuat sendiri
 - kita perlu check rolenya admin / staff, kalau admin bisa langsung next
 - jadi kita perlu mencari data event yang ingin diupdate/didelete lalu mencari user yang sedang login
 - lalu dicocokan antara FK userId di event dan PK di user, apakah sama atau tidak
+- tidak semua logic authorization pada aplikasi seperti ini, tergantung flow dari aplikasinya
 
 ### Error Handler
 - hanya sebuah pemisahan error menjadi suatu komponen agar code kalian tidak redundant, karena banyak error yang sama 
