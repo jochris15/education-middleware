@@ -1,10 +1,8 @@
-if (process.env.NODE_ENV !== "production") {
-    require('dotenv').config()
-}
+require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const port = process.env.PORT || 3000
+const port = 3000
 const AuthController = require('./controllers/AuthController')
 const EventController = require('./controllers/EventController')
 const GameController = require('./controllers/GameController')
@@ -25,7 +23,7 @@ app.get('/events', EventController.read)
 app.post('/events', EventController.add)
 
 // authorization, penggunaan middlewarenya secara endpoint, supaya bisa akses param eventnya
-app.get('/events/:id', authorization, EventController.readDetail)
+app.get('/events/:id', EventController.readDetail)
 app.delete('/events/:id', authorization, EventController.delete)
 app.put('/events/:id', authorization, EventController.edit)
 

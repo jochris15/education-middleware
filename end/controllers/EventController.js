@@ -63,11 +63,7 @@ class Controller {
                 throw ({ name: "NotFound", id })
             }
 
-            await Event.destroy({
-                where: {
-                    id
-                }
-            })
+            await event.destroy()
 
             res.status(200).json({
                 message: `Success delete event with id ${id}`
@@ -88,13 +84,7 @@ class Controller {
 
             const { name, description, totalPrize, eventPoster, eventDate, eventType, eventStatus, gameId } = req.body
 
-            await Event.update({ name, description, totalPrize, eventPoster, eventDate, eventType, eventStatus, gameId }, {
-                where: {
-                    id
-                }
-            })
-
-            event = await Event.findByPk(id)
+            await event.update({ name, description, totalPrize, eventPoster, eventDate, eventType, eventStatus, gameId })
 
             res.status(200).json({
                 message: `Success edit event with id ${id}`,
